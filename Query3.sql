@@ -1,95 +1,63 @@
 
--- First SELECT
-SELECT * FROM dim_customer;
+-- JOINS
 
--- LIMIT Clause
+-- CREATE TABLE orders
+-- (
+-- 	o_id INT,
+--     cust_id INT,
+--     price INT
+-- );
+
+-- INSERT INTO orders
+-- VALUES
+-- (1, 101, 1000),
+-- (2, 201, 1100),
+-- (3, 501, 1200);
+
+-- CREATE TABLE customers
+-- (
+-- 	id INT, 
+--     name VARCHAR(100),
+--     email VARCHAR(100)
+-- );
+
+-- INSERT INTO customers
+-- VALUES
+-- (101, 'lova', 'aa'),
+-- (201, 'ansh', 'bb'),
+-- (301, 'lamba', 'cc');
+
+-- INNER JOIN
 SELECT 
-	customer_id, 
-	first_name, 
-    last_name 
-FROM 
-	dim_customer
-LIMIT 10;
-
--- WHERE Clause (Make sure to always to use brackets between the conditions to avoid the silent errors which are hard to debug)
+	*
+FROM
+	orders o
+INNER JOIN
+	customers c
+ON 
+	o.cust_id = c.id;
+    
+    
+-- LEFT JOIN
 SELECT 
 	*
 FROM
-	dim_customer
-WHERE
-	(gender = 'F') AND (country = 'France') AND (join_date > '2022-01-01');
+	orders o
+LEFT JOIN
+	customers c
+ON 
+	o.cust_id = c.id;
     
--- AND/OR Operator (Make sure to always to use brackets between the conditions to avoid the silent errors which are hard to debug)
-SELECT 
-	*
-FROM
-	dim_customer
-WHERE
-	(gender = 'F') AND ((country = 'France') OR (join_date > '2022-01-01'));
-    
--- LIKE/ILIKE 
-SELECT
-	*
-FROM 
-	dim_customer
-WHERE
-	first_name LIKE 'T%';
+-- We don't use RIGHT JOIN because we can acomplish the same thing with the left join as well
 
-SELECT
-	*
-FROM
-	dim_customer
-WHERE
-	first_name LIKE 'T__f%y';
-    
- -- Sorting the data
-SELECT
-	*
-FROM
-	dim_product
-ORDER BY unit_price DESC;
+-- FULL JOIN - This will give us error, cause in mysql, full joins aren't available
+-- SELECT 
+-- 	*
+-- FROM
+-- 	orders o
+-- OUTER JOIN
+-- 	customers c
+-- ON 
+-- 	o.cust_id = c.id;
 
-
-SELECT
-	*
-FROM 
-	dim_product
-ORDER BY unit_price DESC
-LIMIT 3;
-
--- Using aliasing
-SELECT 
-	product_key, 
-	product_id,
-    product_name AS 'product name',
-    category
-FROM
-	dim_product;
-    
--- grouping
-SELECT
-	category,
-	AVG(unit_price) AS average_price
-FROM 
-	dim_product
-GROUP BY category;
-
-SELECT
-	category,
-    AVG(unit_price) AS average_price
-FROM 
-	dim_product
-GROUP BY
-	category
-HAVING 
-	average_price > 500; -- Here you can use alias in mysql but this is not supported in every sql server. You can use AVG(unit_price) when it isn't supported
-    
-
-	
-
-
-
-    
-    
-
-
+-- But we can get the result of full join using the union of left and right join.
